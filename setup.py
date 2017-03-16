@@ -1,14 +1,14 @@
 from setuptools import setup
 
 setup(
-    name = 'HelloWorld',
+    name = 'Idne',
     version = '1.0',
-    py_modules = ['hello'],
+    py_modules = ['idne'],
     install_requires = [
-        'Click',
+        'Click','robobrowser', 'requests'
     ],
     entry_points = '''
         [console_scripts]
-        hello = hello:cli
+        idne = idne:cli
     ''',
 )
