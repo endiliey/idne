@@ -1,6 +1,7 @@
 import requests
 import click
 import time
+from utils import config
 from robobrowser import RoboBrowser
 
 def get_latest_verdict(user):
@@ -9,21 +10,22 @@ def get_latest_verdict(user):
     js = r.json()
     if 'status' not in js or js['status'] != 'OK':
         raise ConnectionError('Cannot connect to codeforces!')
-    result = js['result'][0]
-    id_ = result['id']
-    verdict_ = result['verdict']
-    time_ = result['timeConsumedMillis']
-    memory_ = result['memoryConsumedBytes'] / 1000
+    try:
+        result = js['result'][0]
+        id_ = result['id']
+        verdict_ = result['verdict']
+        time_ = result['timeConsumedMillis']
+        memory_ = result['memoryConsumedBytes'] / 1000
+    except Exception as e:
+        raise ConnectionError('Cannot get latest submission, error')
     return id_, verdict_, time_, memory_
 
 @click.command()
-@click.argument('user_name')
-@click.argument('passwd')
 @click.argument('prob_id')
-@click.argument('filepath')
-def cli(user_name, passwd, prob_id, filepath):
+@click.argument('filename')
+def cli(prob_id, filename):
     # get latest submission id, so when submitting should have not equal id
-    last_id, b, c, d = get_latest_verdict(user_name)
+    last_id, b, c, d = get_latest_verdict(config.username)
     
     click.echo('Trying to login to codeforces')
     # Browse to Codeforces
@@ -31,27 +33,31 @@ def cli(user_name, passwd, prob_id, filepath):
     browser.open('http://codeforces.com/enter')
         
     enter_form = browser.get_form('enterForm')
-    enter_form['handle'] = user_name
-    enter_form['password'] = passwd
+    enter_form['handle'] = config.username
+    enter_form['password'] = config.password
     browser.submit_form(enter_form)
     
     try:
 	    checks = list(map(lambda x: x.getText()[1:].strip(),
 	        browser.select('div.caption.titled')))
-	    if user_name not in checks:
+	    if config.username not in checks:
 	        click.secho('Login Failed.. Wrong password.', fg = 'red')
 	        return
     except Exception as e:
 	    click.secho('Login Failed.. Maybe wrong id/password.', fg = 'red')
 	    return 
     
-    click.secho('Successful Login, {0}'.format(user_name), fg = 'green')
+    click.secho('Successful Login, {0}'.format(config.username), fg = 'green')
 
-    click.echo('Submitting problem {0} from {1}'.format(prob_id, filepath))
+    click.echo('Submitting problem {0} with {1}'.format(prob_id, filename))
     browser.open('http://codeforces.com/problemset/submit')
     submit_form = browser.get_form(class_ = 'submit-form')
     submit_form['submittedProblemCode'] = prob_id
-    submit_form['sourceFile'] = filepath
+    try:
+        submit_form['sourceFile'] = filename
+    except Exception as e:
+        click.secho('File {0} not found in current directory'.format(filename))
+        return
     browser.submit_form(submit_form)
 
     if browser.url[-6:] != 'status':
@@ -66,7 +72,7 @@ def cli(user_name, passwd, prob_id, filepath):
                 click.secho('OK', fg = 'green')
             elif verdict_ == 'WRONG_ANSWER':
                 click.secho('WRONG_ANSWER', fg = 'red')
-            click.echo('{} MS'.format(time_), '|', '{} KB'.format(memory_))
+            click.echo('{} MS | {} KB'.format(time_, memory_))
             break
         time.sleep(1)
 
