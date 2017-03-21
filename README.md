@@ -4,16 +4,19 @@ My personal command line utility tool (mainly for Codeforces and personal stuff)
 ## Current Features:
 * Submit solution to Codeforces through command-line (without going to www.codeforces.com/problem/submit/) and get result (OK/ Wrong Answer)
 
-
-
-![Screenshot of Test Usage](http://i.imgur.com/vrBOo87.jpg)
+![Screenshot of Test Usage](img/demo1.jpg)
 
 Proof of Working:
-![Proof of Working](http://i.imgur.com/f0HONx9.jpg)
+![Proof of Working](img/demo2.jpg)
 
-## Upcoming Features:
-1. Check list of upcoming contest from Codeforces
-2. etc
+## One time setup (pre-installation)
+
+Go to utils/config.py, then insert your username and password
+```python
+username = "ababcba" # your codeforces username
+password = "asdadas" # your password
+```
+
 
 ## Installation (For Linux user only)
 
