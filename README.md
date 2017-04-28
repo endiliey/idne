@@ -1,5 +1,5 @@
-# idne (beta v1.0)
-My personal command line utility tool (mainly for Codeforces and personal stuff)
+# idne
+A way to submit your solution file to Codeforces through terminal
 
 ## Current Features:
 * Submit solution to Codeforces through command-line (without going to www.codeforces.com/problem/submit/) and get result (OK/ Wrong Answer)
@@ -15,6 +15,11 @@ Go to utils/config.py, then insert your username and password
 ```python
 username = "ababcba" # your codeforces username
 password = "asdadas" # your password
+```
+
+Make sure to edit template.cpp as you wanted it to be.
+```
+vim template.cpp
 ```
 
 
@@ -58,7 +63,43 @@ Install all required dependencies by typing
 pip install --editable .
 ```
 
-Start on using the cli ! you can type this to know how to use it
+Usage Scenario Example (+ Codeforces Parser)
+----------
+
+
+
+Example: Solving [Codeforces Round #259 (Div. 2)](http://codeforces.com/contest/454)
+
+First, ensure that you activate the virtualenv
+Activate virtualenv
 ```
-idne --help
+. venv/bin/activate
 ```
+
+Secondly, parse the problem using [Codeforces Parser](https://github.com/johnathan79717/codeforces-parser) (included in this repo) by
+
+```
+parse 454
+```
+
+And there will be a folder named 454-c++11, with a subfolder (e.g: A, B, C, D) inside. Assume you are solving problem A
+```
+cd 454-c++11/A
+```
+
+Use your favourite text editor and edit A.cpp. I use vim for this example
+```
+vim a.cpp
+```
+
+After confident with your solution, you can use ./test.sh to check if your solution passes the sample test
+```
+./test.sh
+```
+
+If it passes, you can submit with idne. The format is: idne [problem id] [filename]
+```
+idne 454A A.cpp
+```
+
+## ENJOY !
