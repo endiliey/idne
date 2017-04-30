@@ -24,10 +24,9 @@ def get_latest_verdict(user):
 @click.argument('prob_id')
 @click.argument('filename')
 def cli(prob_id, filename):
-    # get latest submission id, so when submitting should have not equal id
+	# get latest submission id, so when submitting should have not equal id
     last_id, b, c, d = get_latest_verdict(config.username)
     
-    click.echo('Trying to login to codeforces')
     # Browse to Codeforces
     browser = RoboBrowser(parser = 'html.parser')
     browser.open('http://codeforces.com/enter')
@@ -47,9 +46,8 @@ def cli(prob_id, filename):
 	    click.secho('Login Failed.. Maybe wrong id/password.', fg = 'red')
 	    return 
     
-    click.secho('Successful Login, {0}'.format(config.username), fg = 'green')
-
-    click.echo('Submitting problem {0} with {1}'.format(prob_id, filename))
+    click.secho('[{0}] login successful! '.format(config.username), fg = 'green')
+    click.secho('Submitting [{1}] for problem [{0}]'.format(prob_id, filename), fg = 'green')
     browser.open('http://codeforces.com/problemset/submit')
     submit_form = browser.get_form(class_ = 'submit-form')
     submit_form['submittedProblemCode'] = prob_id
@@ -64,7 +62,7 @@ def cli(prob_id, filename):
         click.secho('Failed submission, probably you have submit the same file before', fg = 'red')
         return
 
-    click.echo('Successful submission, waiting for result ....')
+    click.secho('[{0}] submitted ...'.format(filename), fg = 'green')
     while True:
         id_, verdict_, time_, memory_ = get_latest_verdict('endijr')
         if id_ != last_id and verdict_ != 'TESTING':
@@ -72,9 +70,9 @@ def cli(prob_id, filename):
                 click.secho('OK', fg = 'green')
             elif verdict_ == 'WRONG_ANSWER':
                 click.secho('WRONG_ANSWER', fg = 'red')
-            click.echo('{} MS | {} KB'.format(time_, memory_))
+            click.secho('{} MS | {} KB'.format(time_, memory_), fg = 'green')
             break
-        time.sleep(1)
+        time.sleep(0.5)
 
 if __name__ == '__main__':
     cli()
