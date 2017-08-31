@@ -4,6 +4,13 @@ import time
 from utils import config
 from robobrowser import RoboBrowser
 
+def safeget(dct, key):
+    try:
+        dct = dct[key]
+    except KeyError:
+        return None
+    return dct
+
 def get_latest_verdict(user):
     r = requests.get('http://codeforces.com/api/user.status?' +
                      'handle={}&from=1&count=1'.format(user))
@@ -13,7 +20,7 @@ def get_latest_verdict(user):
     try:
         result = js['result'][0]
         id_ = result['id']
-        verdict_ = result['verdict']
+        verdict_ = safeget(result, 'verdict') 
         time_ = result['timeConsumedMillis']
         memory_ = result['memoryConsumedBytes'] / 1000
     except Exception as e:
@@ -65,7 +72,7 @@ def cli(prob_id, filename):
     click.secho('[{0}] submitted ...'.format(filename), fg = 'green')
     while True:
         id_, verdict_, time_, memory_ = get_latest_verdict('endijr')
-        if id_ != last_id and verdict_ != 'TESTING':
+        if id_ != last_id and verdict_ != 'TESTING' and verdict_ != None:
             if verdict_ == 'OK':
                 click.secho('OK', fg = 'green')
             elif verdict_ == 'WRONG_ANSWER':
