@@ -39,7 +39,7 @@ def cli(prob_id, filename):
     browser.open('http://codeforces.com/enter')
         
     enter_form = browser.get_form('enterForm')
-    enter_form['handle'] = config.username
+    enter_form['handleOrEmail'] = config.username
     enter_form['password'] = config.password
     browser.submit_form(enter_form)
     
