@@ -1,15 +1,23 @@
 # idne
 A way to submit your solution file to Codeforces through terminal
 
-## Current Features:
-* Submit solution to Codeforces through command-line (without going to www.codeforces.com/problem/submit/) and get result (OK/ Wrong Answer)
 
-![Screenshot of Test Usage](img/demo1.jpg)
 
-Proof of Working:
-![Proof of Working](img/demo2.jpg)
+## Installation
 
-## One time setup (pre-installation)
+Clone the repositories
+```
+git clone https://github.com/endiliey/idne.git
+```
+
+Install all required dependencies in an isolated environment
+
+```bash
+cd idne
+python3 -m venv env
+source env/bin/activate
+pip install --editable .
+```
 
 Go to utils/config.py, then insert your username and password
 ```python
@@ -23,57 +31,17 @@ vim template.cpp
 ```
 
 
-## Installation (For Linux user only)
-
-Prerequisites
--------------
-
-I will assume that you have
-
-* Git
-* Python 2.7
-
-Clone the repositories
-
-```
-git clone https://github.com/endiliey/idne.git
-```
-
-Set-up a Virtualenv
-----------
-
-```
-pip install virtualenv
-```
-
-Create an isolated environments through virtualenv
-
-```
-cd idne
-virtualenv venv
-```
-
-Activate virtualenv
-```
-. venv/bin/activate
-```
-
-Install all required dependencies by typing
-```
-pip install --editable .
-```
-
-Usage Scenario Example (+ Codeforces Parser)
+## Usage
 ----------
 
 
 
 Example: Solving [Codeforces Round #259 (Div. 2)](http://codeforces.com/contest/454)
 
-First, ensure that you activate the virtualenv
+First, ensure that you have activated the virtualenv
 Activate virtualenv
 ```
-. venv/bin/activate
+source env/bin/activate
 ```
 
 Secondly, parse the problem using [Codeforces Parser](https://github.com/johnathan79717/codeforces-parser) (included in this repo) by
@@ -101,5 +69,3 @@ If it passes, you can submit with idne. The format is: idne [problem id] [filena
 ```
 idne 454A A.cpp
 ```
-
-## ENJOY !

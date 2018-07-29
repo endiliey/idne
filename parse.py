@@ -1,7 +1,14 @@
 #!/usr/bin/python
 
-from urllib2 import urlopen
-from HTMLParser import HTMLParser
+# Python 2->3 libraries that were renamed.
+try:
+    from urllib2 import urlopen
+except:
+    from urllib.request import urlopen
+try:
+    from HTMLParser import HTMLParser
+except:
+    from html.parser import HTMLParser
 
 # Other libraries.
 from sys import argv
@@ -196,7 +203,6 @@ def generate_test_script(folder, language, num_tests, problem):
 
 # Main function.
 def main():
-    print (VERSION)
     parser = argparse.ArgumentParser()
     parser.add_argument('--language', '-l', default="c++11", help="The programming language you want to use "
             "(c++11)")
@@ -229,3 +235,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
