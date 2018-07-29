@@ -1,7 +1,7 @@
 # idne
 A way to submit your solution file to Codeforces through terminal
 
-
+![demo](demo.gif)
 
 ## Installation
 
@@ -44,7 +44,7 @@ Activate virtualenv
 source env/bin/activate
 ```
 
-Secondly, parse the problem using [Codeforces Parser](https://github.com/johnathan79717/codeforces-parser) (included in this repo) by
+Secondly, parse the problem
 
 ```
 parse 454
@@ -69,3 +69,7 @@ If it passes, you can submit with idne. The format is: idne [problem id] [filena
 ```
 idne 454A A.cpp
 ```
+
+## Credits
+
+- [Codeforces Parser](https://github.com/johnathan79717/codeforces-parser)
