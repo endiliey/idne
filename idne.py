@@ -23,16 +23,17 @@ def get_latest_verdict(user):
         verdict_ = safeget(result, 'verdict') 
         time_ = result['timeConsumedMillis']
         memory_ = result['memoryConsumedBytes'] / 1000
+        passedTestCount_ = result['passedTestCount']
     except Exception as e:
         raise ConnectionError('Cannot get latest submission, error')
-    return id_, verdict_, time_, memory_
+    return id_, verdict_, time_, memory_, passedTestCount_
 
 @click.command()
 @click.argument('prob_id')
 @click.argument('filename')
 def cli(prob_id, filename):
 	# get latest submission id, so when submitting should have not equal id
-    last_id, b, c, d = get_latest_verdict(config.username)
+    last_id, b, c, d, e = get_latest_verdict(config.username)
     
     # Browse to Codeforces
     browser = RoboBrowser(parser = 'html.parser')
@@ -70,15 +71,19 @@ def cli(prob_id, filename):
         return
 
     click.secho('[{0}] submitted ...'.format(filename), fg = 'green')
+    hasStarted = False
     while True:
-        id_, verdict_, time_, memory_ = get_latest_verdict('endijr')
+        id_, verdict_, time_, memory_, passedTestCount_ = get_latest_verdict(config.username)
         if id_ != last_id and verdict_ != 'TESTING' and verdict_ != None:
             if verdict_ == 'OK':
-                click.secho('OK', fg = 'green')
-            elif verdict_ == 'WRONG_ANSWER':
-                click.secho('WRONG_ANSWER', fg = 'red')
-            click.secho('{} MS | {} KB'.format(time_, memory_), fg = 'green')
+                click.secho('OK - Passed {} tests'.format(passedTestCount_), fg = 'green')
+            else:
+                click.secho("{} on test {}".format(verdict_, passedTestCount_ + 1), fg = 'red')
+            click.secho('{} MS | {} KB'.format(time_, memory_), fg = ('green' if verdict_ == 'OK' else 'red'))
             break
+        elif verdict_ == 'TESTING' and (not hasStarted):
+            click.secho("Judgment has begun", fg='green')
+            hasStarted = True
         time.sleep(0.5)
 
 if __name__ == '__main__':
