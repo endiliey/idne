@@ -1,7 +1,7 @@
 # idne
 A way to submit your solution file to Codeforces through terminal
 
-![demo](demo.gif)
+![preview GIF](https://github.com/endiliey/idne/blob/master/preview.gif?raw=true)
 
 ## Installation
 
