@@ -57,7 +57,7 @@ cd 454-c++11/A
 
 Use your favourite text editor and edit A.cpp. I use vim for this example
 ```
-vim a.cpp
+vim A.cpp
 ```
 
 After confident with your solution, you can use ./test.sh to check if your solution passes the sample test
