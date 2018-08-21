@@ -19,13 +19,13 @@ source env/bin/activate
 pip install --editable .
 ```
 
-Go to utils/config.py, then insert your username and password
+Go to `utils/config.py`, then insert your username and password
 ```python
 username = "ababcba" # your codeforces username
 password = "asdadas" # your password
 ```
 
-Make sure to edit template.cpp as you wanted it to be.
+Make sure to edit `template.cpp` as you wish
 ```
 vim template.cpp
 ```
